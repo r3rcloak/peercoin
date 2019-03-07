@@ -1,9 +1,12 @@
-#ifndef MINTINGVIEW_H
-#define MINTINGVIEW_H
+// Copyright (c) 2012-2019 The Peercoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#ifndef PEERCOIN_QT_MINTINGVIEW_H
+#define PEERCOIN_QT_MINTINGVIEW_H
 
 #include <QWidget>
 #include <QComboBox>
-#include "mintingfilterproxy.h"
+#include <qt/mintingfilterproxy.h>
 
 class WalletModel;
 
@@ -35,16 +38,16 @@ private:
     MintingFilterProxy *mintingProxyModel;
     QMenu *contextMenu;
 
-private slots:
+private Q_SLOTS:
     void contextualMenu(const QPoint &);
     void copyAddress();
     void copyTransactionId();
 
-signals:
+Q_SIGNALS:
 
-public slots:
+public Q_SLOTS:
     void exportClicked();
     void chooseMintingInterval(int idx);
 };
 
-#endif // MINTINGVIEW_H
+#endif // PEERCOIN_QT_MINTINGVIEW_H

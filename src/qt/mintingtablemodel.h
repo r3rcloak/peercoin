@@ -1,6 +1,8 @@
-#ifndef MINTINGTABLEMODEL_H
-#define MINTINGTABLEMODEL_H
-
+// Copyright (c) 2012-2019 The Peercoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#ifndef PEERCOIN_QT_MINTINGTABLEMODEL_H
+#define PEERCOIN_QT_MINTINGTABLEMODEL_H
 
 #include <QAbstractTableModel>
 #include <QStringList>
@@ -59,7 +61,7 @@ private:
     QString formatTxBalance(const KernelRecord *wtx) const;
     QString formatTxCoinDay(const KernelRecord *wtx) const;
 
-public slots:
+public Q_SLOTS:
     void updateTransaction(const QString &hash, int status);
     void updateAge();
     void updateDisplayUnit();
@@ -67,4 +69,4 @@ public slots:
     friend class MintingTablePriv;
 };
 
-#endif // MINTINGTABLEMODEL_H
+#endif // PEERCOIN_QT_MINTINGTABLEMODEL_H

@@ -1,10 +1,13 @@
-#ifndef MULTISIGADDRESSENTRY_H
-#define MULTISIGADDRESSENTRY_H
+// Copyright (c) 2012-2019 The Peercoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#ifndef PEERCOIN_QT_MULTISIGADDRESSENTRY_H
+#define PEERCOIN_QT_MULTISIGADDRESSENTRY_H
 
 #include <QFrame>
 
-
 class WalletModel;
+class PlatformStyle;
 
 namespace Ui
 {
@@ -22,18 +25,19 @@ class MultisigAddressEntry : public QFrame
     bool validate();
     QString getPubkey();
 
-  public slots:
+  public Q_SLOTS:
     void setRemoveEnabled(bool enabled);
     void clear();
 
-  signals:
+  Q_SIGNALS:
     void removeEntry(MultisigAddressEntry *entry);
 
   private:
     Ui::MultisigAddressEntry *ui;
     WalletModel *model;
+    const PlatformStyle *platformStyle;
 
-  private slots:
+  private Q_SLOTS:
     void on_pubkey_textChanged(const QString &pubkey);
     void on_pasteButton_clicked();
     void on_deleteButton_clicked();
@@ -41,4 +45,4 @@ class MultisigAddressEntry : public QFrame
     void on_addressBookButton_clicked();
 };
 
-#endif // MULTISIGADDRESSENTRY_H
+#endif // PEERCOIN_QT_MULTISIGADDRESSENTRY_H

@@ -1,13 +1,22 @@
-#ifndef MULTISIGDIALOG_H
-#define MULTISIGDIALOG_H
+// Copyright (c) 2012-2019 The Peercoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#ifndef PEERCOIN_QT_MULTISIGDIALOG_H
+#define PEERCOIN_QT_MULTISIGDIALOG_H
+
+//#include "multisigaddressentry.h"
+//#include "multisiginputentry.h"
+//#include "sendcoinsentry.h"
+//#include "walletmodel.h"
+
+#include <qt/platformstyle.h>
 
 #include <QDialog>
 
-#include "multisigaddressentry.h"
-#include "multisiginputentry.h"
-#include "sendcoinsentry.h"
-#include "walletmodel.h"
-
+class MultisigAddressEntry;
+class MultisigInputEntry;
+class WalletModel;
+class SendCoinsEntry;
 
 namespace Ui
 {
@@ -18,12 +27,12 @@ class MultisigDialog : public QDialog
 {
     Q_OBJECT;
 
-public:
-    explicit MultisigDialog(QWidget *parent);
+  public:
+    explicit MultisigDialog(const PlatformStyle *_platformStyle, QWidget *parent = 0);
     ~MultisigDialog();
     void setModel(WalletModel *model);
 
-public slots:
+  public Q_SLOTS:
     MultisigAddressEntry * addPubKey();
     void clear();
     void updateRemoveEnabled();
@@ -33,8 +42,9 @@ public slots:
 private:
     Ui::MultisigDialog *ui;
     WalletModel *model;
+    const PlatformStyle *platformStyle;
 
-private slots:
+  private Q_SLOTS:
     void on_createAddressButton_clicked();
     void on_copyMultisigAddressButton_clicked();
     void on_copyRedeemScriptButton_clicked();
@@ -53,4 +63,4 @@ private slots:
     void updateAmounts();
 };
 
-#endif // MULTISIGDIALOG_H
+#endif // PEERCOIN_QT_MULTISIGDIALOG_H

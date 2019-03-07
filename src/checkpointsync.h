@@ -1,15 +1,13 @@
 // Copyright (c) 2012-2019 The Peercoin developers
 // Distributed under conditional MIT/X11 open source software license
 // see the accompanying file COPYING
-#ifndef PPCOIN_CHECKPOINTSYNC_H
-#define  PPCOIN_CHECKPOINTSYNC_H
-
-#include "net.h"
-#include "util.h"
+#ifndef PEERCOIN_CHECKPOINTSYNC_H
+#define PEERCOIN_CHECKPOINTSYNC_H
 
 #define CHECKPOINT_MAX_SPAN (60 * 60 * 4) // max 4 hours before latest block
 
-class uint256;
+#include <netmessagemaker.h>
+
 class CBlock;
 class CBlockIndex;
 class CSyncCheckpoint;
@@ -27,15 +25,12 @@ void SetCheckpointEnforce(bool fEnforce);
 bool AcceptPendingSyncCheckpoint();
 uint256 AutoSelectSyncCheckpoint();
 bool CheckSyncCheckpoint(const uint256& hashBlock, const CBlockIndex* pindexPrev);
-bool WantedByPendingSyncCheckpoint(uint256 hashBlock);
 bool ResetSyncCheckpoint();
 void AskForPendingSyncCheckpoint(CNode* pfrom);
 bool CheckCheckpointPubKey();
 bool SetCheckpointPrivKey(std::string strPrivKey);
 bool SendSyncCheckpoint(uint256 hashCheckpoint);
-bool IsMatureSyncCheckpoint();
 bool IsSyncCheckpointTooOld(unsigned int nSeconds);
-uint256 WantedByOrphan(const CBlock* pblockOrphan);
 
 // Synchronized checkpoint (introduced first in ppcoin)
 class CUnsignedSyncCheckpoint
@@ -44,17 +39,18 @@ public:
     int nVersion;
     uint256 hashCheckpoint;      // checkpoint block
 
-    IMPLEMENT_SERIALIZE
-    (
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(this->nVersion);
-        nVersion = this->nVersion;
         READWRITE(hashCheckpoint);
-    )
+    }
 
     void SetNull()
     {
         nVersion = 1;
-        hashCheckpoint = 0;
+        hashCheckpoint = uint256();
     }
 
     std::string ToString() const
@@ -89,11 +85,13 @@ public:
         SetNull();
     }
 
-    IMPLEMENT_SERIALIZE
-    (
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action) {
         READWRITE(vchMsg);
         READWRITE(vchSig);
-    )
+    }
 
     void SetNull()
     {
@@ -104,7 +102,7 @@ public:
 
     bool IsNull() const
     {
-        return (hashCheckpoint == 0);
+        return (hashCheckpoint == uint256());
     }
 
     uint256 GetHash() const
@@ -115,10 +113,10 @@ public:
     bool RelayTo(CNode* pnode) const
     {
         // returns true if wasn't already sent
-        if (pnode->hashCheckpointKnown != hashCheckpoint)
+        if (g_connman && pnode->hashCheckpointKnown != hashCheckpoint)
         {
             pnode->hashCheckpointKnown = hashCheckpoint;
-            pnode->PushMessage("checkpoint", *this);
+            g_connman->PushMessage(pnode, CNetMsgMaker(pnode->GetSendVersion()).Make("checkpoint", *this));
             return true;
         }
         return false;
@@ -128,4 +126,4 @@ public:
     bool ProcessSyncCheckpoint(CNode* pfrom);
 };
 
-#endif
+#endif // PEERCOIN_CHECKPOINTSYNC_H

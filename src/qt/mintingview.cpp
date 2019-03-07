@@ -1,11 +1,14 @@
-#include "mintingview.h"
-#include "mintingfilterproxy.h"
-#include "transactionrecord.h"
-#include "mintingtablemodel.h"
-#include "walletmodel.h"
-#include "guiconstants.h"
-#include "guiutil.h"
-#include "csvmodelwriter.h"
+// Copyright (c) 2012-2019 The Peercoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#include <qt/mintingview.h>
+#include <qt/mintingfilterproxy.h>
+#include <qt/transactionrecord.h>
+#include <qt/mintingtablemodel.h>
+#include <qt/walletmodel.h>
+#include <qt/guiconstants.h>
+#include <qt/guiutil.h>
+#include <qt/csvmodelwriter.h>
 
 #include <QComboBox>
 #include <QHBoxLayout>
@@ -177,7 +180,7 @@ void MintingView::exportClicked()
     QString filename = GUIUtil::getSaveFileName(
             this,
             tr("Export Minting Data"), QString(),
-            tr("Comma separated file (*.csv)"));
+            tr("Comma separated file (*.csv)"), nullptr);
 
     if (filename.isNull()) return;
 

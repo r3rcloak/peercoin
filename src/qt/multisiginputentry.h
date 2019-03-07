@@ -1,10 +1,12 @@
-#ifndef MULTISIGINPUTENTRY_H
-#define MULTISIGINPUTENTRY_H
+// Copyright (c) 2012-2019 The Peercoin developers
+// Distributed under the MIT/X11 software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+#ifndef PEERCOIN_QT_MULTISIGINPUTENTRY_H
+#define PEERCOIN_QT_MULTISIGINPUTENTRY_H
+
+#include <uint256.h>
 
 #include <QFrame>
-
-#include "uint256.h"
-
 
 class CTxIn;
 class WalletModel;
@@ -24,16 +26,16 @@ class MultisigInputEntry : public QFrame
     void setModel(WalletModel *model);
     bool validate();
     CTxIn getInput();
-    int64 getAmount();
+    int64_t getAmount();
     QString getRedeemScript();
     void setTransactionId(QString transactionId);
     void setTransactionOutputIndex(int index);
 
-  public slots:
+  public Q_SLOTS:
     void setRemoveEnabled(bool enabled);
     void clear();
 
-  signals:
+  Q_SIGNALS:
     void removeEntry(MultisigInputEntry *entry);
     void updateAmount();
 
@@ -42,7 +44,7 @@ class MultisigInputEntry : public QFrame
     WalletModel *model;
     uint256 txHash;
 
-  private slots:
+  private Q_SLOTS:
     void on_transactionId_textChanged(const QString &transactionId);
     void on_pasteTransactionIdButton_clicked();
     void on_deleteButton_clicked();
@@ -50,4 +52,4 @@ class MultisigInputEntry : public QFrame
     void on_pasteRedeemScriptButton_clicked();
 };
 
-#endif // MULTISIGINPUTENTRY_H
+#endif // PEERCOIN_QT_MULTISIGINPUTENTRY_H
