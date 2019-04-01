@@ -227,6 +227,7 @@ bool fCheckBlockIndex = false;
 bool fCheckpointsEnabled = DEFAULT_CHECKPOINTS_ENABLED;
 size_t nCoinCacheUsage = 5000 * 300;
 uint64_t nPruneTarget = 0;
+bool fAlerts = DEFAULT_ALERTS;
 int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 
 uint256 hashAssumeValid;
@@ -989,9 +990,10 @@ bool IsInitialBlockDownload()
 
 CBlockIndex *pindexBestForkTip = nullptr, *pindexBestForkBase = nullptr;
 
-static void AlertNotify(const std::string& strMessage)
+void AlertNotify(const std::string& strMessage, bool fUpdateUI)
 {
-    uiInterface.NotifyAlertChanged();
+    if (fUpdateUI)
+        uiInterface.NotifyAlertChanged(uint256(), CT_UPDATED); // peercoin: we are using arguments that will have no effects in updateAlert()
     std::string strCmd = gArgs.GetArg("-alertnotify", "");
     if (strCmd.empty()) return;
 
@@ -3392,12 +3394,9 @@ bool ProcessNewBlock(const CChainParams& chainparams, const std::shared_ptr<cons
     if (!g_chainstate.ActivateBestChain(state, chainparams, pblock))
         return error("%s: ActivateBestChain failed", __func__);
 
-    //ppcTODO: move this somewhere else, because at this point we did not do some PoS checks that can only be done in ConnectBlock()
-    // otherwise we might send a checkpoint on incorrect PoS block
-//    // peercoin: if responsible for sync-checkpoint send it
-//    if (pfrom && !CSyncCheckpoint::strMasterPrivKey.empty() &&
-//        (int)GetArg("-checkpointdepth", -1) >= 0)
-//        SendSyncCheckpoint(AutoSelectSyncCheckpoint());
+    // peercoin: if responsible for sync-checkpoint send it
+    if (!CSyncCheckpoint::strMasterPrivKey.empty() && (int)gArgs.GetArg("-checkpointdepth", -1) >= 0)
+        SendSyncCheckpoint(AutoSelectSyncCheckpoint());
 
     return true;
 }

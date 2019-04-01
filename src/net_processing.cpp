@@ -5,6 +5,7 @@
 
 #include <net_processing.h>
 
+#include <alert.h>
 #include <addrman.h>
 #include <arith_uint256.h>
 #include <blockencodings.h>
@@ -1716,6 +1717,13 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                 checkpointMessage.RelayTo(pfrom);
         }
 
+        // peercoin: relay alerts
+        {
+            LOCK(cs_mapAlerts);
+            for (auto& item : mapAlerts)
+                item.second.RelayTo(pfrom);
+        }
+
         std::string remoteAddr;
         if (fLogIPs)
             remoteAddr = ", peeraddr=" + pfrom->addr.ToString();
@@ -2359,10 +2367,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         const CBlockIndex *pindex = nullptr;
         CValidationState state;
 
-        //ppcTODO - do we care about nPoSTemperature inside CMPCTBLOCK?
-        uint32_t tmp1;
-        uint256 tmp2;
-        if (!ProcessNewBlockHeaders(tmp1, tmp2, {cmpctblock.header}, false, state, chainparams, &pindex)) {
+        if (!ProcessNewBlockHeaders(pfrom->nPoSTemperature, pfrom->lastAcceptedHeader, {cmpctblock.header}, false, state, chainparams, &pindex)) {
             int nDoS;
             if (state.IsInvalid(nDoS)) {
                 if (nDoS > 0) {
@@ -2995,6 +3000,35 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                 pfrom->minFeeFilter = newFeeFilter;
             }
             LogPrint(BCLog::NET, "received: feefilter of %d satoshi from peer=%d\n", newFeeFilter, pfrom->GetId());
+        }
+    }
+
+    else if (fAlerts && strCommand == NetMsgType::ALERT)
+    {
+        CAlert alert;
+        vRecv >> alert;
+
+        uint256 alertHash = alert.GetHash();
+        if (pfrom->setKnown.count(alertHash) == 0)
+        {
+            if (alert.ProcessAlert(chainparams.AlertKey()))
+            {
+                // Relay
+                pfrom->setKnown.insert(alertHash);
+                if (g_connman)
+                    g_connman->ForEachNode([&alert](CNode* pnode) {
+                        alert.RelayTo(pnode);
+                    });
+            }
+            else {
+                // Small DoS penalty so peers that send us lots of
+                // duplicate/expired/invalid-signature/whatever alerts
+                // eventually get banned.
+                // This isn't a Misbehaving(100) (immediate ban) because the
+                // peer might be an older or different implementation with
+                // a different signature key, etc.
+                Misbehaving(pfrom->GetId(), 10);
+            }
         }
     }
 
