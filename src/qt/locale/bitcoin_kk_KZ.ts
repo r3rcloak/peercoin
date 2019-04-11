@@ -70,8 +70,8 @@
         <translation>Құпия сөзді өзгерту</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Биткоин</translation>
+        <source>Peercoin</source>
+        <translation>Пиркойн</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -169,8 +169,8 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>Bitcoin</source>
-        <translation>Биткоин</translation>
+        <source>Peercoin</source>
+        <translation>Пиркойн</translation>
     </message>
     <message>
         <source>Error</source>

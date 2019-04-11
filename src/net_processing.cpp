@@ -1710,12 +1710,14 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             connman->MarkAddressGood(pfrom->addr);
         }
 
+#ifdef ENABLE_CHECKPOINTS
         // peercoin: relay sync-checkpoint
         {
             LOCK(cs_main);
             if (!checkpointMessage.IsNull())
                 checkpointMessage.RelayTo(pfrom);
         }
+#endif
 
         // peercoin: relay alerts
         {
@@ -1749,9 +1751,11 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             pfrom->fDisconnect = true;
         }
 
+#ifdef ENABLE_CHECKPOINTS
         // peercoin: ask for pending sync-checkpoint if any
         if (!IsInitialBlockDownload())
             AskForPendingSyncCheckpoint(pfrom);
+#endif
 
         return true;
     }
@@ -2656,6 +2660,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         headers.resize(nCount);
         {
         LOCK(cs_main);
+        int nPoSTemperature = pfrom->nPoSTemperature;
         for (unsigned int n = 0; n < nCount; n++) {
             vRecv >> headers[n];
             ReadCompactSize(vRecv); // ignore tx count; assume it is 0.
@@ -2664,7 +2669,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             // peercoin: quick check to see if we should ban peers for PoS spam
             // note: at this point we don't know if PoW headers are valid - we just assume they are
             // so we need to update pfrom->nPoSTemperature once we actualy check them
-            int nPoSTemperature = pfrom->nPoSTemperature;
             bool fPoS = headers[n].nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
             nPoSTemperature += fPoS ? 1 : -POW_HEADER_COOLING;
             // peer cannot cool himself by PoW headers from other branches
@@ -3032,6 +3036,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         }
     }
 
+#ifdef ENABLE_CHECKPOINTS
     else if (strCommand == NetMsgType::CHECKPOINT)
     {
          CSyncCheckpoint checkpoint;
@@ -3043,6 +3048,7 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
                      checkpoint.RelayTo(pnode);
                  });
     }
+#endif
 
     else if (strCommand == NetMsgType::NOTFOUND) {
         // We do not care about the NOTFOUND message, but logging an Unknown Command
