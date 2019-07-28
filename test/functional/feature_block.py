@@ -115,15 +115,18 @@ class FullBlockTest(ComparisonTestFramework):
         if spend == None:
             block = create_block(base_block_hash, coinbase, block_time)
         else:
-            coinbase.vout[0].nValue += spend.tx.vout[spend.n].nValue - 1 # all but one satoshi to fees
+            coinbase.vout[0].nValue += spend.tx.vout[spend.n].nValue - 10000000 # all but 10000000 satoshi to fees
             coinbase.rehash()
             block = create_block(base_block_hash, coinbase, block_time)
-            tx = create_transaction(spend.tx, spend.n, b"", 1, script)  # spend 1 satoshi
+            tx = create_transaction(spend.tx, spend.n, b"", 10000000, script)  # spend 10000000 satoshi
             self.sign_tx(tx, spend.tx, spend.n)
             self.add_transactions_to_block(block, [tx])
             block.hashMerkleRoot = block.calc_merkle_root()
         if solve:
+            # add peercoin signature
             block.solve()
+            block.vchBlockSig = self.coinbase_key.sign(bytes.fromhex(block.hash)[::-1])
+
         self.tip = block
         self.block_heights[block.sha256] = height
         assert number not in self.blocks
@@ -165,6 +168,7 @@ class FullBlockTest(ComparisonTestFramework):
             old_sha256 = block.sha256
             block.hashMerkleRoot = block.calc_merkle_root()
             block.solve()
+            block.vchBlockSig = self.coinbase_key.sign(bytes.fromhex(block.hash)[::-1])
             # Update the internal state just like in next_block
             self.tip = block
             if block.sha256 != old_sha256:
@@ -259,7 +263,7 @@ class FullBlockTest(ComparisonTestFramework):
         #                                                    \-> b9 (4)
         #                      \-> b3 (1) -> b4 (2)
         tip(6)
-        block(9, spend=out[4], additional_coinbase_value=1)
+        block(9, spend=out[4], additional_coinbase_value=10000000000)
         yield rejected(RejectResult(16, b'bad-cb-amount'))
 
         # Create a fork that ends in a block with too much fee (the one that causes the reorg)
@@ -270,7 +274,7 @@ class FullBlockTest(ComparisonTestFramework):
         block(10, spend=out[3])
         yield rejected()
 
-        block(11, spend=out[4], additional_coinbase_value=1)
+        block(11, spend=out[4], additional_coinbase_value=10000000000)
         yield rejected(RejectResult(16, b'bad-cb-amount'))
 
 
@@ -290,7 +294,7 @@ class FullBlockTest(ComparisonTestFramework):
         save_spendable_output()
         # b14 is invalid, but the node won't know that until it tries to connect
         # Tip still can't advance because b12 is missing
-        block(14, spend=out[5], additional_coinbase_value=1)
+        block(14, spend=out[5], additional_coinbase_value=10000000000)
         yield rejected()
 
         yield TestInstance([[b12, True, b13.sha256]]) # New tip should be b13.

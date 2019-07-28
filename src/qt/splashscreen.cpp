@@ -30,8 +30,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QWidget(0, f), curAlignment(0)
 {
     // set reference point, paddings
-    int paddingRight            = 50;
-    int paddingTop              = 50;
+    int paddingRight            = 55;
+    int paddingTop              = 155;
     int titleVersionVSpace      = 17;
     int titleCopyrightVSpace    = 40;
 
@@ -44,7 +44,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     // define text to place
     QString titleText       = tr(PACKAGE_NAME);
     QString versionText     = QString("Version %1").arg(QString::fromStdString(FormatFullVersion()));
-    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2009, COPYRIGHT_YEAR)).c_str());
+    QString copyrightText   = QString::fromUtf8(CopyrightHolders(strprintf("\xc2\xA9 %u-%u ", 2012, COPYRIGHT_YEAR)).c_str());
     QString titleAddText    = networkStyle->getTitleAddText();
 
     QString font            = QApplication::font().toString();
@@ -69,12 +69,15 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixPaint.fillRect(rGradient, gradient);
 
     // draw the bitcoin icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(-150,-122), QSize(430,430));
-
-    const QSize requiredSize(1024,1024);
+    const QSize requiredSize(75,75);
     QPixmap icon(networkStyle->getAppIcon().pixmap(requiredSize));
 
+    QRect rectIcon(QPoint(315,60), requiredSize);
     pixPaint.drawPixmap(rectIcon, icon);
+
+    QRect rectMantis(QPoint(5,25), QSize(1007/3.5,900/3.5));
+
+    pixPaint.drawPixmap(rectMantis, QPixmap(":/images/mantis"));
 
     // check font size and drawing with
     pixPaint.setFont(QFont(font, 33*fontFactor));

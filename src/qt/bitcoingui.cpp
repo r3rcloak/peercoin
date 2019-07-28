@@ -84,7 +84,7 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     enableWallet(false),
     clientModel(0),
     walletFrame(0),
-    unitDisplayControl(0),
+    //unitDisplayControl(0),
     labelWalletEncryptionIcon(0),
     labelWalletHDStatusIcon(0),
     connectionsControl(0),
@@ -209,15 +209,15 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *_platformStyle, const NetworkStyle *
     QHBoxLayout *frameBlocksLayout = new QHBoxLayout(frameBlocks);
     frameBlocksLayout->setContentsMargins(3,0,3,0);
     frameBlocksLayout->setSpacing(3);
-    unitDisplayControl = new UnitDisplayStatusBarControl(platformStyle);
+    //unitDisplayControl = new UnitDisplayStatusBarControl(platformStyle);
     labelWalletEncryptionIcon = new QLabel();
     labelWalletHDStatusIcon = new QLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
     labelBlocksIcon = new GUIUtil::ClickableLabel();
     if(enableWallet)
     {
-        frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(unitDisplayControl);
+        //frameBlocksLayout->addStretch();
+        //frameBlocksLayout->addWidget(unitDisplayControl);
         frameBlocksLayout->addStretch();
         frameBlocksLayout->addWidget(labelWalletEncryptionIcon);
         frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
@@ -325,12 +325,14 @@ void BitcoinGUI::createActions()
     mintingAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(mintingAction);
 
+/*
     multisigAction = new QAction(QIcon(":/icons/multisig"), tr("&Multisig"), this);
     multisigAction->setStatusTip(tr("UI to create multisig addresses"));
     multisigAction->setToolTip(multisigAction->statusTip());
     multisigAction->setCheckable(true);
-    multisigAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    multisigAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
     tabGroup->addAction(multisigAction);
+*/
 
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -349,8 +351,8 @@ void BitcoinGUI::createActions()
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
     connect(mintingAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(mintingAction, SIGNAL(triggered()), this, SLOT(gotoMintingPage()));
-    connect(multisigAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(multisigAction, SIGNAL(triggered()), this, SLOT(gotoMultisigPage()));
+//    connect(multisigAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+//    connect(multisigAction, SIGNAL(triggered()), this, SLOT(gotoMultisigPage()));
 #endif // ENABLE_WALLET
 
     quitAction = new QAction(QIcon(":/icons/quit"), tr("E&xit"), this);
@@ -459,6 +461,7 @@ void BitcoinGUI::createMenuBar()
         file->addAction(backupWalletAction);
         file->addAction(signMessageAction);
         file->addAction(verifyMessageAction);
+        //file->addAction(multisigAction);
         file->addSeparator();
         file->addAction(usedSendingAddressesAction);
         file->addAction(usedReceivingAddressesAction);
@@ -508,7 +511,6 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(receiveCoinsAction);
         toolbar->addAction(historyAction);
         toolbar->addAction(mintingAction);
-        toolbar->addAction(multisigAction);
         overviewAction->setChecked(true);
     }
 }
@@ -544,7 +546,7 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
             walletFrame->setClientModel(_clientModel);
         }
 #endif // ENABLE_WALLET
-        unitDisplayControl->setOptionsModel(_clientModel->getOptionsModel());
+        //unitDisplayControl->setOptionsModel(_clientModel->getOptionsModel());
 
         OptionsModel* optionsModel = _clientModel->getOptionsModel();
         if(optionsModel)
@@ -571,7 +573,7 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel)
             walletFrame->setClientModel(nullptr);
         }
 #endif // ENABLE_WALLET
-        unitDisplayControl->setOptionsModel(nullptr);
+        //unitDisplayControl->setOptionsModel(nullptr);
     }
 }
 
@@ -658,7 +660,7 @@ void BitcoinGUI::createTrayIconMenu()
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(signMessageAction);
     trayIconMenu->addAction(verifyMessageAction);
-    trayIconMenu->addAction(multisigAction);
+    //trayIconMenu->addAction(multisigAction);
     trayIconMenu->addSeparator();
     trayIconMenu->addAction(optionsAction);
     trayIconMenu->addAction(openRPCConsoleAction);

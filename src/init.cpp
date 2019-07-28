@@ -508,7 +508,7 @@ std::string LicenseInfo()
     const std::string URL_SOURCE_CODE = "<https://github.com/peercoin/peercoin>";
     const std::string URL_WEBSITE = "<https://peercoin.net/>";
 
-    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
+    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2012, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
            strprintf(_("Please contribute if you find %s useful. "
                        "Visit %s for further information about the software."),
@@ -1003,6 +1003,7 @@ bool AppInitParameterInteraction()
         nScriptCheckThreads = MAX_SCRIPTCHECK_THREADS;
 
     // block pruning; get the amount of disk space (in MiB) to allot for block & undo files
+/*
     int64_t nPruneArg = gArgs.GetArg("-prune", 0);
     if (nPruneArg < 0) {
         return InitError(_("Prune cannot be configured with a negative value."));
@@ -1019,7 +1020,7 @@ bool AppInitParameterInteraction()
         LogPrintf("Prune configured to target %uMiB on disk for block and undo files.\n", nPruneTarget / 1024 / 1024);
         fPruneMode = true;
     }
-
+*/
     nConnectTimeout = gArgs.GetArg("-timeout", DEFAULT_CONNECT_TIMEOUT);
     if (nConnectTimeout <= 0)
         nConnectTimeout = DEFAULT_CONNECT_TIMEOUT;

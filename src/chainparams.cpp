@@ -123,6 +123,7 @@ public:
         vSeeds.emplace_back("seed2.peercoin.net");
         vSeeds.emplace_back("seed.peercoin-library.org");
         vSeeds.emplace_back("ppcseed.ns.7server.net");
+        vSeeds.emplace_back("seed.ppcoin.info");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,55);  // peercoin: addresses begin with 'P'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,117); // peercoin: addresses begin with 'p'
@@ -150,6 +151,7 @@ public:
                 {336000, uint256S("0x4d261cef6e61a5ed8325e560f1d6e36f4698853a4c7134677f47a1d1d842bdf6")},
                 {371850, uint256S("0x6b18adcb0a6e080dae85b74eee2b83fabb157bbea64fab0ed2192b2f6d5b89f3")},
                 {407813, uint256S("0x00000000000000012730b0f48bed8afbeb08164c9d63597afb082e82ea05cec9")},
+                {443561, uint256S("0xf81cea8e4e40b2cfcc13a8bd82436399c35a55df951b95e7128601c1838029ed")},
             }
         };
 
@@ -216,6 +218,7 @@ public:
         vSeeds.emplace_back("tseed.peercoin.net");
         vSeeds.emplace_back("tseed2.peercoin.net");
         vSeeds.emplace_back("tseed.peercoin-library.org");
+        vSeeds.emplace_back("testseed.ppcoin.info");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -244,6 +247,7 @@ public:
                 {336000, uint256S("0xf07adf61615c529f7c282b858d13d3e037b197324cb12e0669c461947494c4e3")},
                 {372751, uint256S("0x000000000000148db599b217c117b5104f5043c55f6ca2a8a065d9fab9f9bba1")},
                 {382019, uint256S("0x3ab75769d7957d9bf0857b5019d0a0e41044fa9ecf30b2f9c32aa457b0864ce5")},
+                {412691, uint256S("0x0e20318be88f07f521453435b37cfc516c3de07264a78ed7170985a1126126ab")},
             }
         };
 
@@ -275,6 +279,11 @@ public:
         consensus.nStakeTargetSpacing = 10 * 60; // 10-minute block spacing
         consensus.nTargetSpacingWorkMax = 12 * consensus.nStakeTargetSpacing; // 2-hour
         consensus.nPowTargetSpacing = consensus.nStakeTargetSpacing;
+
+        consensus.nStakeMinAge = 60 * 60 * 24; // test net min age is 1 day
+        consensus.nStakeMaxAge = 60 * 60 * 24 * 90;
+        consensus.nModifierInterval = 60 * 20; // Modifier interval: time to elapse before new modifier is computed
+        consensus.nCoinbaseMaturity = 60;
 
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
