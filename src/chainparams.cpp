@@ -119,11 +119,15 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they dont support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
+        
+        // cloak: todo - setup and add cloak seed nodes
+        /*
         vSeeds.emplace_back("seed.peercoin.net");
         vSeeds.emplace_back("seed2.peercoin.net");
         vSeeds.emplace_back("seed.peercoin-library.org");
         vSeeds.emplace_back("ppcseed.ns.7server.net");
         vSeeds.emplace_back("seed.ppcoin.info");
+        */
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,55);  // peercoin: addresses begin with 'P'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,117); // peercoin: addresses begin with 'p'
@@ -215,10 +219,14 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
+
+        // cloak: todo - setup and add cloak seed nodes
+        /* 
         vSeeds.emplace_back("tseed.peercoin.net");
         vSeeds.emplace_back("tseed2.peercoin.net");
         vSeeds.emplace_back("tseed.peercoin-library.org");
         vSeeds.emplace_back("testseed.ppcoin.info");
+        */
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
