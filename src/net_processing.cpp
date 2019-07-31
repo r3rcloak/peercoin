@@ -2687,7 +2687,9 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             // note: at this point we don't know if PoW headers are valid - we just assume they are
             // so we need to update pfrom->nPoSTemperature once we actualy check them
             bool fPoS = headers[n].nFlags & CBlockIndex::BLOCK_PROOF_OF_STAKE;
-            nTmpPoSTemperature += fPoS ? 1 : -POW_HEADER_COOLING;
+            //nTmpPoSTemperature += fPoS ? 1 : -POW_HEADER_COOLING;
+            nTmpPoSTemperature += fPoS ? 1 : 0-POW_HEADER_COOLING;
+            
             // peer cannot cool himself by PoW headers from other branches
             if (n == 0 && !fPoS && headers[n].hashPrevBlock != pfrom->lastAcceptedHeader)
                 nTmpPoSTemperature += POW_HEADER_COOLING;
@@ -3666,7 +3668,7 @@ bool PeerLogicValidation::SendMessages(CNode* pto, std::atomic<bool>& interruptM
             if (pto->nNextInvSend < nNow) {
                 fSendTrickle = true;
                 // Use half the delay for outbound peers, as there is less privacy concern for them.
-                pto->nNextInvSend = PoissonNextSend(nNow, INVENTORY_BROADCAST_INTERVAL >> !pto->fInbound);
+                pto->nNextInvSend = PoissonNextSend(nNow, INVENTORY_BROADCAST_INTERVAL >> static_cast<int>(!pto->fInbound));
             }
 
             // Time to send but the peer has requested we not relay transactions.

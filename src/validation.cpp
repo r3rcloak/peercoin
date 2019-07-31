@@ -4711,6 +4711,7 @@ bool GetCoinAge(const CTransaction& tx, const CCoinsViewCache &view, uint64_t& n
                 fseek(file.Get(), postx.nTxOffset, SEEK_CUR);
                 file >> txPrev;
             } catch (std::exception &e) {
+                (void)e;
                 return error("%s() : deserialize or I/O error in GetCoinAge()", __PRETTY_FUNCTION__);
             }
             if (txPrev->GetHash() != prevout.hash)

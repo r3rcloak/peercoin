@@ -10,3 +10,5 @@ packages/*
 *.vcxproj.user
 *.vcxproj
 */Win32
+!libbitcoinconsensus.vcxproj
+!bitcoin-tx.vcxproj

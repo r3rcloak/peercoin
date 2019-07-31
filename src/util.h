@@ -208,6 +208,11 @@ inline bool IsSwitchChar(char c)
 #endif
 }
 
+#ifdef WIN32
+#define __PRETTY_FUNCTION__ __FUNCSIG__
+#endif
+
+
 class ArgsManager
 {
 protected:

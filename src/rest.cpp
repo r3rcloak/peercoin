@@ -460,6 +460,7 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
                 oss >> vOutPoints;
             }
         } catch (const std::ios_base::failure& e) {
+            (void)e;
             // abort in case of unreadable binary data
             return RESTERR(req, HTTP_BAD_REQUEST, "Parse error");
         }

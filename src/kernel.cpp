@@ -558,6 +558,7 @@ bool CheckProofOfStake(CValidationState &state, CBlockIndex* pindexPrev, const C
             fseek(file.Get(), postx.nTxOffset, SEEK_CUR);
             file >> txPrev;
         } catch (std::exception &e) {
+            (void)e;
             return error("%s() : deserialize or I/O error in CheckProofOfStake()", __PRETTY_FUNCTION__);
         }
         if (txPrev->GetHash() != txin.prevout.hash)

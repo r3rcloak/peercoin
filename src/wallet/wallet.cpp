@@ -4346,6 +4346,7 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             fseek(file.Get(), postx.nTxOffset, SEEK_CUR);
             file >> tx;
         } catch (std::exception &e) {
+            (void)e;
             return error("%s() : deserialize or I/O error in CreateCoinStake()", __PRETTY_FUNCTION__);
         }
 
@@ -4431,7 +4432,8 @@ bool CWallet::CreateCoinStake(const CKeyStore& keystore, unsigned int nBits, int
             fseek(file.Get(), postx.nTxOffset, SEEK_CUR);
             file >> tx;
         } catch (std::exception &e) {
-            return error("%s() : deserialize or I/O error in CreateCoinStake()", __PRETTY_FUNCTION__);
+            (void)e;
+            return error("%s() : deserialize or I/O error in CreateCoinStake()", __PRETTY_FUNCTION__);            
         }
 
 
