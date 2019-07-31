@@ -1554,7 +1554,7 @@ static int64_t nTimeTotal = 0;
 static int64_t nBlocksTotal = 0;
 
 // These checks can only be done when all previous block have been added.
-bool PeercoinContextualBlockChecks(const CBlock& block, CValidationState& state, CBlockIndex* pindex, bool fJustCheck)
+bool CloakcoinContextualBlockChecks(const CBlock& block, CValidationState& state, CBlockIndex* pindex, bool fJustCheck)
 {
     uint256 hashProofOfStake = uint256();
     // peercoin: verify hash target and signature of coinstake tx
@@ -1627,7 +1627,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
            (*pindex->phashBlock == block.GetHash()));
     int64_t nTimeStart = GetTimeMicros();
 
-    if (pindex->nStakeModifier == 0 && pindex->nStakeModifierChecksum == 0 && !PeercoinContextualBlockChecks(block, state, pindex, fJustCheck))
+    if (pindex->nStakeModifier == 0 && pindex->nStakeModifierChecksum == 0 && !CloakcoinContextualBlockChecks(block, state, pindex, fJustCheck))
         return error("%s: failed PoS check %s", __func__, FormatStateMessage(state));
 
     // Check it again in case a previous version let a bad block in
@@ -3331,7 +3331,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
     }
 
     // peercoin: check PoS
-    if (fCheckPoS && !PeercoinContextualBlockChecks(block, state, pindex, false)) {
+    if (fCheckPoS && !CloakcoinContextualBlockChecks(block, state, pindex, false)) {
         pindex->nStatus |= BLOCK_FAILED_VALID;
         setDirtyBlockIndex.insert(pindex);
         return state.DoS(100, false, REJECT_INVALID, "bad-pos", false, "proof of stake is incorrect");
@@ -4158,7 +4158,7 @@ bool LoadBlockIndex(const CChainParams& chainparams)
 
         LogPrintf("Initializing databases...\n");
         // Use the provided setting for -txindex in the new database
-        fTxIndex = true; // peercoin: txindex is always enabled
+        fTxIndex = true; // cloakcoin: txindex is always enabled
         pblocktree->WriteFlag("txindex", fTxIndex);
     }
     return true;

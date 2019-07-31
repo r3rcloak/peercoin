@@ -444,7 +444,7 @@ int CommandLineRPC(int argc, char *argv[])
                             strPrint += "error message:\n"+errMsg.get_str();
 
                         if (errCode.isNum() && errCode.get_int() == RPC_WALLET_NOT_SPECIFIED) {
-                            strPrint += "\nTry adding \"-rpcwallet=<filename>\" option to peercoin-cli command line.";
+                            strPrint += "\nTry adding \"-rpcwallet=<filename>\" option to cloakcoin-cli command line.";
                         }
                     }
                 } else {
