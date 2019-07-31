@@ -51,7 +51,7 @@
 #include <boost/thread.hpp>
 
 #if defined(NDEBUG)
-# error "Peercoin cannot be compiled without assertions."
+# error "Cloakcoin cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -238,7 +238,7 @@ CTxMemPool mempool;
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "Peercoin Signed Message:\n";
+const std::string strMessageMagic = "Cloakcoin Signed Message:\n";
 
 // Internal stuff
 namespace {
@@ -1504,7 +1504,7 @@ static bool WriteTxIndexDataForBlock(const CBlock& block, CValidationState& stat
 static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck() {
-    RenameThread("peercoin-scriptch");
+    RenameThread("cloakcoin-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -4737,7 +4737,7 @@ bool GetCoinAge(const CTransaction& tx, const CCoinsViewCache &view, uint64_t& n
     return true;
 }
 
-// peercoin: sign block
+// cloakcoin: sign block
 typedef std::vector<unsigned char> valtype;
 bool SignBlock(CBlock& block, const CKeyStore& keystore)
 {
@@ -4761,7 +4761,7 @@ bool SignBlock(CBlock& block, const CKeyStore& keystore)
     return false;
 }
 
-// peercoin: check block signature
+// cloakcoin: check block signature
 bool CheckBlockSignature(const CBlock& block)
 {
     if (block.GetHash() == Params().GetConsensus().hashGenesisBlock)

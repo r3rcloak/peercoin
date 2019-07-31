@@ -54,10 +54,10 @@ static int AppInitRawTx(int argc, char* argv[])
     if (argc<2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help") || gArgs.IsArgSet("-version"))
     {
         // First part of help message is specific to this utility
-        std::string strUsage = strprintf(_("%s peercoin-tx utility version"), _(PACKAGE_NAME)) + " " + FormatFullVersion() + "\n\n" +
+        std::string strUsage = strprintf(_("%s cloakcoin-tx utility version"), _(PACKAGE_NAME)) + " " + FormatFullVersion() + "\n\n" +
             _("Usage:") + "\n" +
-              "  peercoin-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded peercoin transaction") + "\n" +
-              "  peercoin-tx [options] -create [commands]   " + _("Create hex-encoded peercoin transaction") + "\n" +
+              "  cloakcoin-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded cloakcoin transaction") + "\n" +
+              "  cloakcoin-tx [options] -create [commands]   " + _("Create hex-encoded cloakcoin transaction") + "\n" +
               "\n";
 
         fprintf(stdout, "%s", strUsage.c_str());
