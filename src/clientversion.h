@@ -52,7 +52,7 @@ static const int CLIENT_VERSION =
                          +       1 * CLIENT_VERSION_BUILD;
 
 // note: peercoin version is used for display purpose AND to accept alerts
-static const int PEERCOIN_VERSION =
+static const int CLOAKCOIN_VERSION =
                            1000000 * CLOAKCOIN_VERSION_MAJOR
                          +   10000 * CLOAKCOIN_VERSION_MINOR
                          +     100 * CLOAKCOIN_VERSION_REVISION

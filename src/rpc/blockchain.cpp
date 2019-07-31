@@ -993,7 +993,7 @@ UniValue gettxout(const JSONRPCRequest& request)
             "     \"hex\" : \"hex\",        (string) \n"
             "     \"reqSigs\" : n,          (numeric) Number of required signatures\n"
             "     \"type\" : \"pubkeyhash\", (string) The type, eg pubkeyhash\n"
-            "     \"addresses\" : [          (array of string) array of peercoin addresses\n"
+            "     \"addresses\" : [          (array of string) array of cloakcoin addresses\n"
             "        \"address\"     (string) peercoin address\n"
             "        ,...\n"
             "     ]\n"
