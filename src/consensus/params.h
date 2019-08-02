@@ -47,7 +47,7 @@ struct Params {
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
 
-    /** peercoin stuff */
+    /** peercoin / cloakcoin stuff */
     uint256 bnInitialHashTarget;
     int64_t nStakeTargetSpacing;
     int64_t nTargetSpacingWorkMax;
@@ -55,7 +55,8 @@ struct Params {
     int64_t nStakeMinAge;
     int64_t nStakeMaxAge;
     int64_t nModifierInterval;
-    int nCoinbaseMaturity;  // Coinbase transaction outputs can only be spent after this number of new blocks (network rule)
+    int nCoinbaseMaturity;  // Coinbase transaction outputs can only be spent after this number of new blocks (network rule)    
+    uint256 posLimit;
 };
 } // namespace Consensus
 
